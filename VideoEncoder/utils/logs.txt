@@ -1,1 +1,0 @@
-19-Feb-23 11:54:36 - pyrogram.parser.html - WARNING - Unclosed tags: <code> (x1)

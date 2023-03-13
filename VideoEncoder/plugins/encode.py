@@ -36,17 +36,24 @@ video_mimetype = [
     "video/mpeg"
 ]
 
+import os
+import ffmpeg
 
-@Client.on_message(filters.incoming & (filters.video | filters.document))
-async def encode_video(app, message):
-    check = await check_user(message)
-    if not check:
-        return
-    if message.document:
-        if not message.document.mime_type in video_mimetype:
-            return
-    data.append(message)
-    if len(data) == 1:
-        await handle_task(message)
-    else:
-        await message.reply("<code>Added to queue...</code>")
+def encode_video(input_file, output_file):
+    # Get the video duration
+    probe = ffmpeg.probe(input_file)
+    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+    duration = float(video_stream['duration'])
+
+    # Set the encoding options
+    input_video = ffmpeg.input(input_file)
+    output_video = input_video.output(output_file, codec='libx264', crf=23, preset='medium', tune='film', vf=f"scale=-2:360")
+    output_video.run()
+
+    # Get the size of the encoded file
+    size = os.path.getsize(output_file)
+
+    # Return the duration and size of the encoded video
+    return duration, size
+
+

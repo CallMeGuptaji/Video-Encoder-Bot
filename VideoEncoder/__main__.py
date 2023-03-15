@@ -44,18 +44,14 @@ def start_command(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hello, welcome to the Video Encoder Bot!')
 
+def help_command(update, context):
+    """Send a message when the command /help is issued."""
+    update.message.reply_text('Here are the available commands:\n\n'
+                              '/start - Start the bot\n'
+                              '/help - Show this help message\n'
+                              '/encode - Compress/Encode a video in h264 format\n'
+                              '/mediainfo - Get technical information about a video file')
 
-COMMAND_HANDLERS = {
-
-    '/start': start_command,
-
-    '/help': help_command,
-
-    '/encode': encode_command,
-
-    '/mediainfo': mediainfo_command,
-
-}
 
 def mediainfo_command(bot, update):
 
@@ -67,7 +63,12 @@ def mediainfo_command(bot, update):
 
         bot.send_message(chat_id=chat_id, text='Please send a video file with the /mediainfo command.')
 
-        return
+COMMAND_HANDLERS = {
+    '/start': start_command,
+    '/help': help_command,
+    '/encode': encode_command,
+    '/mediainfo': mediainfo_command,
+}
 
     # Get the file ID of the video file
 
@@ -86,3 +87,6 @@ def mediainfo_command(bot, update):
     bot.send_message(chat_id=chat_id, text=output.decode('utf-8'))
     
 app.loop.run_until_complete(main())
+
+
+

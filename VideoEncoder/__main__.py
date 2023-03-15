@@ -25,7 +25,7 @@ import subprocess
 
 import logging
 
-from telegram.ext import CommandHandler, MessageHandler, Filters, Updater
+from telegram.ext import CommandHandler, MessageHandler, Updater
 
 # Rest of the code...
 
@@ -39,6 +39,11 @@ async def main():
     print(f'[Started]: @{(await app.get_me()).username}')
     await idle()
     await app.stop()
+
+def start_command(update, context):
+    """Send a message when the command /start is issued."""
+    update.message.reply_text('Hello, welcome to the Video Encoder Bot!')
+
 
 COMMAND_HANDLERS = {
 

@@ -89,21 +89,28 @@ COMMAND_HANDLERS = {
     '/mediainfo': mediainfo_command,
 }
 
-    # Get the file ID of the video file
+def mediainfo_command(update, context):
+    chat_id = update.message.chat_id
 
+    # Check if a video file was sent with the command
+    if not update.message.video:
+        update.message.reply_text('Please send a video file with the /mediainfo command.')
+        return
+
+    # Get the file ID of the video file
     file_id = update.message.video.file_id
 
     # Download the video file
-
-    video_file = bot.get_file(file_id)
+    video_file = context.bot.get_file(file_id)
 
     # Run the mediainfo command on the video file
-
     output = subprocess.check_output(['mediainfo', '--Output=JSON', video_file.download_as_bytearray()])
 
     # Send the technical information back to the user
+    update.message.reply_text(output.decode('utf-8'))
 
-    bot.send_message(chat_id=chat_id, text=output.decode('utf-8'))
+
+
     
 app.loop.run_until_complete(main())
 

@@ -39,6 +39,25 @@ async def main():
     print(f'[Started]: @{(await app.get_me()).username}')
     await idle()
     await app.stop()
+    def help_command(update, context):
+
+    """Send a message when the command /help is issued."""
+
+    update.message.reply_text('This bot can compress/encode videos in h264 format. To use it, simply send a video file and use the /encode command to compress it.')
+
+    
+
+COMMAND_HANDLERS = {
+
+    '/start': start_command,
+
+    '/help': help_command,
+
+    '/encode': encode_command,
+
+    '/mediainfo': mediainfo_command,
+
+}
 
 def start_command(update, context):
     """Send a message when the command /start is issued."""
